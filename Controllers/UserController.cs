@@ -28,14 +28,15 @@ namespace online_chat.Controllers
                 var createdUser = await _userService.AddUserAsync(createUser);
                 return CreatedAtAction(nameof(GetById), new { userId = createdUser.UserId }, createdUser);
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
             catch (ArgumentException ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+
         }
 
         [HttpPost("login")]
